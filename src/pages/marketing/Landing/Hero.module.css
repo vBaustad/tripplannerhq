@@ -1,0 +1,162 @@
+/* Local tokens (safe fallbacks; will use your globals if present) */
+.hero {
+  --background-rgb: 11 15 20;        /* #0b0f14 */
+  --ink: var(--color-ink, #e9edf2);
+
+  /* warm palette for this section */
+  --orange: #ff8c42;
+  --pink: #ff6b9d;
+  --yellow: #ffd23f;
+  --purple: #8a2be2;
+
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(900px 420px at 15% -10%, color-mix(in oklab, var(--orange) 12%, transparent), transparent),
+    linear-gradient(180deg, #0b0f14, #121821);
+}
+
+/* Overlays */
+.overlayGradient {
+  position: absolute;
+  inset: 0;
+  opacity: .3;
+  background-image: linear-gradient(135deg, var(--orange) 0%, var(--pink) 50%, var(--yellow) 100%);
+  pointer-events: none;
+}
+.overlayVignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--background-rgb)),
+    transparent,
+    rgba(var(--background-rgb), 0.9)
+  );
+  pointer-events: none;
+}
+
+/* Decorative blobs */
+.deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.bubbleTopRight {
+  position: absolute; top: -10rem; right: -10rem; width: 24rem; height: 24rem;
+  border-radius: 50%; filter: blur(60px);
+  background: color-mix(in oklab, var(--yellow) 30%, transparent);
+  animation: float 6s ease-in-out infinite;
+}
+.bubbleLeftMid  {
+  position: absolute; top: 33%; left: -5rem; width: 16rem; height: 16rem;
+  border-radius: 50%; filter: blur(60px);
+  background: color-mix(in oklab, var(--pink) 25%, transparent);
+  animation: float 6s ease-in-out infinite 1s;
+}
+.bubbleBottomLeft {
+  position: absolute; bottom: -10rem; left: -10rem; width: 20rem; height: 20rem;
+  border-radius: 50%; filter: blur(60px);
+  background: color-mix(in oklab, var(--purple) 25%, transparent);
+  animation: float 6s ease-in-out infinite 2s;
+}
+.bubbleRightLower {
+  position: absolute; bottom: 25%; right: -2.5rem; width: 12rem; height: 12rem;
+  border-radius: 50%; filter: blur(60px);
+  background: color-mix(in oklab, var(--orange) 30%, transparent);
+  animation: float 6s ease-in-out infinite 3s;
+}
+
+/* Content container */
+.container { position: relative; z-index: 10; max-width: 1100px; margin: 0 auto; padding: 5rem 1rem; }
+.grid { display: grid; gap: 3rem; align-items: center; }
+@media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+/* Left column */
+.left { display: flex; flex-direction: column; gap: 2rem; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.5rem; border-radius: 9999px; font-size: .875rem; font-weight: 600;
+  color: #1a1a2e; background: rgba(255,255,255,.9);
+  border: 1px solid color-mix(in oklab, var(--pink) 30%, transparent);
+  backdrop-filter: blur(16px); width: fit-content;
+}
+.badge :global(svg){ width: 16px; height: 16px; color: var(--pink); fill: currentColor; }
+
+.stack > * + * { margin-top: 20px; }
+
+.title { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin: 0; }
+.gradientText1 {
+  background: linear-gradient(to right, var(--pink), var(--purple), var(--orange));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.gradientText2 {
+  background: linear-gradient(to right, var(--orange), var(--yellow), #ff7f7f);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.subtitle { font-size: 1.25rem; line-height: 1.6; max-width: 32rem; color: #b8c2cf; }
+
+/* CTAs */
+.ctaRow { display: flex; gap: 1rem; flex-direction: column; }
+@media (min-width: 640px){ .ctaRow{ flex-direction: row; } }
+
+.btnLg { font-size: 1.125rem; padding: 1.5rem 2rem; border-radius: 12px; }
+.btnPrimary {
+  border: none; color: #fff; display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+  background: linear-gradient(135deg, var(--orange) 0%, var(--pink) 50%, var(--purple) 100%);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+  transition: transform .2s ease;
+}
+.btnPrimary:hover { transform: translateY(-2px); }
+.btnSecondary {
+  border: 1px solid color-mix(in oklab, var(--pink) 40%, transparent);
+  background: rgba(255,255,255,.9); color: #1a1a2e; font-weight: 600;
+  display: inline-flex; align-items: center; gap: .5rem; border-radius: 12px;
+  backdrop-filter: blur(20px); transition: background .2s ease, transform .2s ease;
+}
+.btnSecondary:hover{ background: rgba(255,107,157,.2); }
+
+/* Stats */
+.stats { display: flex; align-items: center; gap: 2rem; padding-top: 1rem; flex-wrap: wrap; }
+.stat { text-align: center; }
+.statLabel { font-size: .875rem; color: #8fa3b7; }
+.statValuePrimary { color: var(--pink); font-size: 1.5rem; font-weight: 800; }
+.statValueSecondary { color: var(--purple); font-size: 1.5rem; font-weight: 800; }
+.statValueTertiary { color: var(--orange); font-size: 1.5rem; font-weight: 800; }
+
+/* Right column */
+.right { position: relative; }
+.fadeInUp { animation: fadeInUp .6s ease both; }
+
+.phoneImg {
+  width: 100%; max-width: 28rem; margin: 0 auto; border-radius: 1.5rem;
+  filter: drop-shadow(0 25px 25px rgba(0,0,0,.15));
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Floating cards */
+.floatingCard {
+  position: absolute; padding: 1rem; border-radius: .75rem;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in oklab, var(--pink) 30%, transparent);
+  animation: scaleIn .6s ease both;
+  background: rgba(255,255,255,.95); color: #1a1a2e;
+}
+.floatingCardTopLeft { top: -1rem; left: -1rem; }
+.floatingCardBottomRight {
+  bottom: -1rem; right: -1rem; color: #fff;
+  background: linear-gradient(135deg, var(--orange) 0%, var(--pink) 50%, var(--purple) 100%);
+}
+
+/* Dots */
+.dotPrimary, .dotQuaternary { position: absolute; border-radius: 50%; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1); }
+.dotPrimary { top: 33%; right: -2rem; width: .75rem; height: .75rem; background-color: var(--pink); }
+.dotQuaternary { bottom: 33%; left: -2rem; width: .5rem; height: .5rem; background-color: var(--yellow); }
+
+/* Animations */
+@keyframes hueRotate { from { filter: hue-rotate(0deg);} to { filter: hue-rotate(360deg);} }
+@keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
+@keyframes scaleIn { from { opacity:0; transform: scale(.96);} to { opacity:1; transform: scale(1);} }
+@keyframes fadeInUp { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
