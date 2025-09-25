@@ -1,0 +1,259 @@
+/* ===== Shared inner-section scaffolding (white middle) ===== */
+.featuresSection {
+  scroll-margin-top: 96px;
+  position: relative;
+  background: #fff;
+  padding: clamp(3rem, 6vw, 6rem) 0;
+  color: var(--foreground);
+}
+
+/* Keep these present but invisible for now (you can re-enable later) */
+.featuresBackground,
+.featuresDecorative,
+.featuresDecorative1,
+.featuresDecorative2 { display: none; }
+
+/* ===== Features ===== */
+.featuresHeader { text-align: center; margin-bottom: 3rem; }
+
+.featuresBadge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 700;
+  background: color-mix(in oklab, var(--quaternary) 18%, #fff 82%);
+  border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+  color: color-mix(in oklab, var(--foreground) 80%, #000 20%);
+  margin-bottom: 1rem;
+}
+
+.featuresTitle {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 800; line-height: 1.1; text-wrap: balance; margin: 0.25rem 0 0.75rem;
+}
+.featuresTitleGradient {
+  background: linear-gradient(90deg, var(--secondary), var(--tertiary), var(--primary));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.featuresDescription {
+  font-size: 1.125rem; line-height: 1.6; color: var(--muted-foreground);
+  max-width: 48rem; margin: 0 auto;
+}
+
+.featuresGrid {
+  margin-top: 2rem;
+  display: grid; gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.featureCard {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid color-mix(in oklab, var(--primary) 12%, var(--border) 88%);
+  padding: 1.25rem;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  box-shadow: 0 10px 24px -18px rgba(0,0,0,.35);
+}
+.featureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px -22px rgba(0,0,0,.35);
+  border-color: color-mix(in oklab, var(--primary) 18%, var(--border) 82%);
+}
+
+/* let the 1st and 4th cards span two columns on desktop */
+@media (min-width: 900px) {
+  .large { grid-column: span 2; }
+}
+
+/* tinted variants (very light) */
+.primary     { background: color-mix(in oklab, var(--primary) 6%, #fff); }
+.secondary   { background: color-mix(in oklab, var(--secondary) 6%, #fff); }
+.tertiary    { background: color-mix(in oklab, var(--tertiary) 6%, #fff); }
+.quaternary  { background: color-mix(in oklab, var(--quaternary) 6%, #fff); }
+.coral       { background: color-mix(in oklab, var(--accent-coral) 6%, #fff); }
+.sunset      { background: color-mix(in oklab, var(--accent-sunset) 6%, #fff); }
+
+/* tiny internal glow—calm */
+.featureDecorative {
+  position: absolute; top: -1.5rem; right: -1.5rem; width: 3.5rem; height: 3.5rem;
+  border-radius: 50%; filter: blur(18px); opacity: .12; pointer-events: none;
+}
+.featureDecorative.primary     { background: var(--primary); }
+.featureDecorative.secondary   { background: var(--secondary); }
+.featureDecorative.tertiary    { background: var(--tertiary); }
+.featureDecorative.quaternary  { background: var(--quaternary); }
+.featureDecorative.coral       { background: var(--accent-coral); }
+.featureDecorative.sunset      { background: var(--accent-sunset); }
+
+/* icon chip (lucide uses currentColor for stroke, so set text color) */
+.featureIcon {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+  margin-bottom: .75rem; color: var(--primary-foreground);
+  box-shadow: 0 10px 20px -12px rgba(0,0,0,.25);
+}
+.featureIcon.primary     { background: linear-gradient(135deg, var(--tertiary), var(--primary)); }
+.featureIcon.secondary   { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+.featureIcon.tertiary    { background: linear-gradient(135deg, var(--quaternary), var(--tertiary)); }
+.featureIcon.quaternary  { background: linear-gradient(135deg, var(--tertiary), var(--quaternary)); }
+.featureIcon.coral       { background: linear-gradient(135deg, var(--accent-coral), var(--primary)); }
+.featureIcon.sunset      { background: linear-gradient(135deg, var(--accent-sunset), var(--tertiary)); }
+
+.featureTitle { margin: .25rem 0; font-weight: 800; }
+.featureDescription { color: var(--muted-foreground); }
+
+/* entrance animation in module scope */
+.fadeInUp { animation: featuresFade .6s ease both; }
+@keyframes featuresFade { from { opacity:0; transform: translateY(10px);} to { opacity:1; transform:none; } }
+
+/* ===== App Showcase (calm + performant) ===== */
+.appShowcase {
+  position: relative;
+  background: #fff;
+  padding: clamp(3rem, 6vw, 6rem) 0;
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+.appShowcaseBackground {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 28rem at 50% -10%,
+      color-mix(in oklab, var(--quaternary) 12%, transparent), transparent 65%),
+    radial-gradient(42rem 18rem at 8% 110%,
+      color-mix(in oklab, var(--primary) 10%, transparent), transparent 70%),
+    radial-gradient(38rem 16rem at 100% 90%,
+      color-mix(in oklab, var(--tertiary) 10%, transparent), transparent 70%);
+  opacity: .45;
+}
+
+.appShowcaseHeader { text-align: center; margin-bottom: 3.25rem; }
+
+.appShowcaseBadge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .5rem 1rem; border-radius: 9999px; font-size: .85rem; font-weight: 700;
+  background: color-mix(in oklab, var(--quaternary) 18%, #fff 82%);
+  border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+  color: color-mix(in oklab, var(--foreground) 80%, #000 20%);
+  margin-bottom: 1rem;
+}
+
+.appShowcaseTitle {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 800; line-height: 1.1; text-wrap: balance; margin: .25rem 0 .75rem;
+}
+.appShowcaseTitleGradient {
+  background: linear-gradient(90deg, var(--tertiary), var(--quaternary), var(--primary));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.appShowcaseDescription {
+  font-size: 1.125rem; line-height: 1.6; color: var(--muted-foreground);
+  max-width: 48rem; margin: 0 auto;
+}
+
+/* layout */
+.showcaseGrid {
+  display: grid; gap: 1.5rem; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+}
+@media (min-width: 1024px) { .showcaseGrid { grid-template-columns: 1.35fr 1fr; } }
+.mediaCol { display: flex; flex-direction: column; gap: 1rem; }
+.copyCol  { display: flex; flex-direction: column; gap: 1rem; }
+
+/* --- Browser image: edge-to-edge, rounded corners (no visible frame) --- */
+.browserFrame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 14px 34px -22px rgba(0,0,0,.28);
+}
+.windowBar { display: none; }
+
+.browserImage {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  transform: translateZ(0); /* GPU hint */
+}
+
+/* chips on top of the image */
+.floatingChip {
+  position: absolute; display: inline-flex; align-items: center; gap: .45rem;
+  padding: .45rem .65rem; border-radius: .6rem; font-weight: 700; font-size: .85rem;
+  color: #fff; background: linear-gradient(135deg, var(--primary), var(--tertiary));
+  box-shadow: 0 12px 28px -18px rgba(0,0,0,.28);
+  z-index: 2;
+}
+.chipTopLeft { top: .6rem; left: .6rem; }
+.chipBottomRight { bottom: .6rem; right: .6rem; }
+
+/* Phones */
+.deviceRow {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.phoneFrame {
+  border: 1px solid color-mix(in oklab, var(--primary) 12%, var(--border) 88%);
+  background: #fff; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 12px 28px -20px rgba(0,0,0,.2);
+}
+.phoneFrame img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover;
+}
+
+/* Steps */
+.stepList { list-style: none; margin: 0; padding: 0; display: grid; gap: .85rem; }
+.stepItem { display: grid; grid-template-columns: auto 1fr; gap: .8rem; align-items: start; }
+
+.stepIcon {
+  width: 2.3rem; height: 2.3rem; border-radius: .75rem;
+  display: grid; place-items: center; font-weight: 800; font-size: .9rem; color: #fff;
+  box-shadow: 0 6px 18px -10px rgba(0,0,0,.25);
+}
+.isPrimary    { background: linear-gradient(135deg, var(--primary), var(--tertiary)); }
+.isTertiary   { background: linear-gradient(135deg, var(--tertiary), var(--quaternary)); }
+.isQuaternary { background: linear-gradient(135deg, var(--quaternary), var(--primary)); }
+
+.stepBody {}
+.stepTitle { margin: .06rem 0 .16rem; font-weight: 800; }
+.stepText  { color: var(--muted-foreground); line-height: 1.6; font-size: .97rem; }
+
+/* --- Points: minimalist rows (no pills) --- */
+.points {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .35rem .75rem;
+  margin-top: .35rem;
+}
+@media (min-width: 640px) { .points { grid-template-columns: 1fr 1fr; } }
+
+.points li {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem 0;         /* no background/border = cleaner */
+  border: 0;
+  background: transparent;
+  color: color-mix(in oklab, var(--foreground) 88%, #000 12%);
+}
+.points li svg {
+  width: 18px; height: 18px; flex: none;
+  color: var(--primary);
+  opacity: .9;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.04));
+}
+
+/* Tip */
+.tip {
+  display: grid; grid-template-columns: auto 1fr; gap: .6rem;
+  margin-top: .75rem; padding: .85rem 1rem; border-radius: .9rem;
+  background: color-mix(in oklab, #fff 96%, var(--primary) 4%);
+  border: 1px solid color-mix(in oklab, var(--primary) 16%, transparent);
+  color: color-mix(in oklab, var(--foreground) 92%, #000 8%);
+}

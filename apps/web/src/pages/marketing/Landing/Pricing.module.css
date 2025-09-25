@@ -1,0 +1,161 @@
+.section {
+  scroll-margin-top: 96px;
+  position: relative;
+  background: #fff;
+  color: var(--foreground);
+  padding: clamp(3rem, 6vw, 6rem) 0;
+  border-top: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+.header {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto 3rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: color-mix(in oklab, var(--foreground) 85%, #000 15%);
+  background: color-mix(in oklab, #fff 88%, var(--secondary) 12%);
+  border: 1px solid color-mix(in oklab, var(--primary) 18%, transparent);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  text-wrap: balance;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--muted-foreground);
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 2.25rem;
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid color-mix(in oklab, var(--primary) 10%, var(--border) 90%);
+  background: #fff;
+  box-shadow: 0 18px 36px -24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px -26px rgba(0, 0, 0, 0.28);
+  border-color: color-mix(in oklab, var(--primary) 16%, var(--border) 84%);
+}
+
+.popular {
+  border-color: color-mix(in oklab, var(--primary) 34%, transparent);
+  box-shadow: 0 26px 48px -22px rgba(0, 0, 0, 0.28);
+}
+
+.ribbon {
+  position: absolute;
+  top: -1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: var(--primary-foreground);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.32);
+}
+
+.planName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.planDescription {
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.period {
+  color: var(--muted-foreground);
+  font-weight: 600;
+}
+
+.featureList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.featureItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: color-mix(in oklab, var(--foreground) 88%, #000 12%);
+  font-size: 0.95rem;
+}
+
+.featureItem svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--primary);
+}
+
+.cta {
+  margin-top: auto;
+}
+
+.note {
+  margin-top: 2.5rem;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.75rem;
+  }
+}
+
