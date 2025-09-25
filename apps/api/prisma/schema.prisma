@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(uuid()) @db.Uuid
+  email         String  @unique
+  displayName   String?
+  homeCurrency  String  @default("USD")
+  createdUtc    DateTime @default(now())
+  updatedUtc    DateTime @updatedAt
+
+  trips         Trip[]
+}
+
+model Trip {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @db.Uuid
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  startDate     DateTime // store midnight UTC date
+  endDate       DateTime
+  budgetAmount  Decimal?
+  budgetCurrency String?
+  notes         String?
+  isDeleted     Boolean  @default(false)
+  createdUtc    DateTime @default(now())
+  updatedUtc    DateTime @updatedAt
+
+  segments      Segment[]
+  expenses      Expense[]
+  pretripPurchases PreTripPurchase[]
+  packingItems  PackingItem[]
+
+  @@index([userId])
+}
+
+model Segment {
+  id          String   @id @default(uuid()) @db.Uuid
+  tripId      String   @db.Uuid
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  countryCode String?
+  city        String?
+  timezone    String?
+  isDeleted   Boolean  @default(false)
+  createdUtc  DateTime @default(now())
+  updatedUtc  DateTime @updatedAt
+
+  expenses    Expense[]
+  accommodation Accommodation?
+
+  @@index([tripId])
+}
+
+model Expense {
+  id             String   @id @default(uuid()) @db.Uuid
+  tripId         String   @db.Uuid
+  trip           Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  segmentId      String?  @db.Uuid
+  segment        Segment? @relation(fields: [segmentId], references: [id], onDelete: SetNull)
+  occurredDate   DateTime
+  category       String
+  merchant       String?
+  notes          String?
+  amount         Decimal
+  currency       String
+  fxRateToHome   Decimal?
+  homeAmount     Decimal?
+  receiptUrl     String?
+  isDeleted      Boolean  @default(false)
+  createdUtc     DateTime @default(now())
+  updatedUtc     DateTime @updatedAt
+
+  @@index([tripId, occurredDate])
+  @@index([segmentId, occurredDate])
+  @@index([category])
+}
+
+model Accommodation {
+  id            String   @id @default(uuid()) @db.Uuid
+  segmentId     String   @unique @db.Uuid
+  segment       Segment  @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  placeName     String
+  nights        Int
+  nightlyCost   Decimal?
+  currency      String?
+  fxRateToHome  Decimal?
+  totalHome     Decimal?
+  checkinDate   DateTime?
+  checkoutDate  DateTime?
+  notes         String?
+  createdUtc    DateTime  @default(now())
+  updatedUtc    DateTime  @updatedAt
+}
+
+model PreTripPurchase {
+  id            String   @id @default(uuid()) @db.Uuid
+  tripId        String   @db.Uuid
+  trip          Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  purchasedDate DateTime?
+  category      String?
+  itemName      String
+  amount        Decimal
+  currency      String
+  fxRateToHome  Decimal?
+  homeAmount    Decimal?
+  notes         String?
+  isDeleted     Boolean  @default(false)
+  createdUtc    DateTime @default(now())
+  updatedUtc    DateTime @updatedAt
+
+  @@index([tripId])
+}
+
+model PackingItem {
+  id          String   @id @default(uuid()) @db.Uuid
+  tripId      String   @db.Uuid
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  category    String
+  label       String
+  quantity    Int      @default(1)
+  isChecked   Boolean  @default(false)
+  notes       String?
+  createdUtc  DateTime @default(now())
+  updatedUtc  DateTime @updatedAt
+
+  @@index([tripId])
+}
+
+model CurrencyRate {
+  id            String   @id @default(uuid()) @db.Uuid
+  baseCurrency  String
+  quoteCurrency String
+  rateDate      DateTime
+  rate          Decimal
+
+  @@unique([baseCurrency, quoteCurrency, rateDate])
+}

@@ -1,0 +1,113 @@
+﻿.section {
+  scroll-margin-top: 96px;
+  position: relative;
+  background: color-mix(in oklab, #fff 92%, var(--muted) 8%);
+  padding: clamp(3rem, 6vw, 6rem) 0;
+  color: var(--foreground);
+}
+
+.header {
+  text-align: center;
+  max-width: 44rem;
+  margin: 0 auto 3rem;
+}
+
+.title {
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  text-wrap: balance;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #fff;
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid color-mix(in oklab, var(--primary) 10%, var(--border) 90%);
+  padding: 2rem;
+  box-shadow: 0 20px 44px -28px rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -26px rgba(0, 0, 0, 0.32);
+  border-color: color-mix(in oklab, var(--primary) 18%, var(--border) 82%);
+}
+
+.rating {
+  display: inline-flex;
+  gap: 0.35rem;
+  color: var(--primary);
+}
+
+.quote {
+  color: color-mix(in oklab, var(--foreground) 90%, #000 10%);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid color-mix(in oklab, var(--primary) 20%, transparent);
+}
+
+.avatarFallback {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--primary-foreground);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  box-shadow: 0 14px 28px -18px rgba(0, 0, 0, 0.32);
+}
+
+.personInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.personName {
+  font-weight: 700;
+}
+
+.personMeta {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.75rem;
+  }
+}
+

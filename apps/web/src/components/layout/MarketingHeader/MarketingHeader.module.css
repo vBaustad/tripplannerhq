@@ -1,0 +1,67 @@
+﻿.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 1.1rem clamp(1.25rem, 5vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.scrolled {
+  background: color-mix(in oklab, var(--background) 55%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom-color: color-mix(in oklab, var(--border) 65%, transparent);
+  box-shadow: 0 16px 36px -30px rgba(0, 0, 0, 0.45);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+}
+
+.nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.95rem;
+}
+
+.link {
+  color: color-mix(in oklab, var(--foreground) 80%, #000 20%);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--foreground);
+}
+
+.ctaGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+@media (max-width: 640px) {
+  .bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav,
+  .ctaGroup {
+    gap: 0.65rem;
+  }
+}
+
