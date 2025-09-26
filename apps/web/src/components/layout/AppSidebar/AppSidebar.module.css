@@ -3,8 +3,11 @@
   flex-direction: column;
   gap: 2rem;
   padding: clamp(1.5rem, 4vw, 2.5rem);
-  background: color-mix(in oklab, var(--muted) 18%, #fff 82%);
-  border-right: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, hsl(20deg 88% 66%) 22%, #fff 78%),
+    color-mix(in oklab, hsl(28deg 82% 74%) 10%, #fff 90%)
+  );
   min-width: clamp(220px, 18vw, 280px);
 }
 
@@ -46,6 +49,16 @@
   display: grid;
   gap: 0.5rem;
 }
+
+.navHeader {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: color-mix(in oklab, var(--muted-foreground) 75%, #000 25%);
+}
+
 
 .navLink {
   display: flex;

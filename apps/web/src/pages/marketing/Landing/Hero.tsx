@@ -8,7 +8,6 @@ export function Hero() {
       {/* overlays */}
       <div className={s.overlayGradient} aria-hidden="true" />
       <div className={s.overlayVignette} aria-hidden="true" />
-      {/* NEW: soft fade into white */}
       <div className={s.bottomFade} aria-hidden="true" />
 
       {/* decorative blobs */}
@@ -94,5 +93,3 @@ export function Hero() {
     </section>
   );
 }
-
-

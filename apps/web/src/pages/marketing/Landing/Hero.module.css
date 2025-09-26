@@ -2,7 +2,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: min(100vh, 720px);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   color: var(--foreground);
@@ -93,11 +93,16 @@
 .title { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin: 0; color: var(--foreground); }
 .gradientText1 {
   background: linear-gradient(to right, var(--primary), var(--secondary), var(--tertiary));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
+
 .gradientText2 {
   background: linear-gradient(to right, var(--tertiary), var(--quaternary), var(--accent-coral));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .subtitle { font-size: 1.25rem; line-height: 1.6; max-width: 32rem; color: var(--muted-foreground); }
 

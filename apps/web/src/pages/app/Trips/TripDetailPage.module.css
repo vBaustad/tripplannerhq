@@ -1,0 +1,43 @@
+.tabBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.tab {
+  padding: 0.5rem 0.9rem;
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  background: color-mix(in oklab, #fff 94%, var(--muted) 6%);
+  text-decoration: none;
+  color: color-mix(in oklab, var(--foreground) 85%, var(--muted-foreground) 15%);
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab:hover {
+  background: color-mix(in oklab, var(--primary) 12%, #fff 88%);
+  border-color: color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+.active {
+  background: color-mix(in oklab, var(--primary) 20%, #fff 80%);
+  color: color-mix(in oklab, var(--primary) 80%, black 20%);
+  border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+}
+
+.backLink {
+  margin-left: auto;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.contentShell {
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  background: color-mix(in oklab, #fff 97%, var(--muted) 3%);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  min-height: 240px;
+}

@@ -21,18 +21,25 @@ app.use(express.json());
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripePublishableKey = process.env.STRIPE_PUBLISHABLE_KEY ?? null;
 const stripePriceId = process.env.STRIPE_PRICE_ID ?? null;
-const planPriceIds = [
+const configuredPlanPriceIds = [
   process.env.PRICE_EXPLORER_ID,
   process.env.PRICE_ADVENTURER_ID,
   process.env.PRICE_GLOBETROTTER_ID,
-].filter((value) => typeof value === "string" && value.length > 0);
-const validPlanPriceIds = new Set(planPriceIds);
+]
+  .map((value) => (typeof value === "string" ? value.trim() : ""))
+  .filter((value) => value.length > 0);
+const validPlanPriceIds =
+  configuredPlanPriceIds.length > 0 ? new Set(configuredPlanPriceIds) : null;
 let stripe = null;
 
 if (!stripeSecretKey) {
   console.warn("[stripe] STRIPE_SECRET_KEY is not set. Stripe endpoints will return 500 until configured.");
 } else {
   stripe = new Stripe(stripeSecretKey, { apiVersion: "2024-06-20" });
+}
+
+if (!stripePublishableKey) {
+  console.warn("[stripe] STRIPE_PUBLISHABLE_KEY is not set. Client requests will rely on Vite fallback env vars.");
 }
 
 const PASSWORD_SALT_ROUNDS = 10;
@@ -88,7 +95,11 @@ async function ensureStripeCustomer({ name, email }) {
 }
 
 function isSupportedPlanPriceId(value) {
-  return typeof value === "string" && validPlanPriceIds.has(value);
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (trimmed.length === 0) return false;
+  if (!validPlanPriceIds) return true;
+  return validPlanPriceIds.has(trimmed);
 }
 
 app.get("/health", (_req, res) => {
@@ -125,11 +136,6 @@ app.post("/api/auth/signup", async (req, res) => {
 
   if (password.length < 8) {
     res.status(400).json({ error: "Password must be at least 8 characters long." });
-    return;
-  }
-
-  if (!stripePublishableKey) {
-    res.status(500).json({ error: "Stripe publishable key is not configured." });
     return;
   }
 

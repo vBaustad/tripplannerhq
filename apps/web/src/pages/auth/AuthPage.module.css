@@ -91,7 +91,7 @@
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--muted-foreground);
-  text-align: center;
+  text-align: left;
 }
 
 .stripeNotice span {
@@ -253,6 +253,7 @@
   flex-direction: column;
   gap: 2rem;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .checkoutBrand {
@@ -292,6 +293,18 @@
   padding: clamp(1.25rem, 3vw, 1.75rem);
   display: grid;
   gap: 0.65rem;
+}
+
+.sidebarSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sidebarPlaceholder {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
 }
 
 .checkoutPlanName {
@@ -338,10 +351,56 @@
   gap: 1rem;
 }
 
+.signupIntro {
+  display: grid;
+  gap: 0.4rem;
+}
+
 .checkoutTitle {
   margin: 0;
   font-size: clamp(1.4rem, 3vw, 1.8rem);
   font-weight: 800;
+}
+
+.checkoutSubtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+  max-width: 36ch;
+}
+
+.checkoutStep {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--primary) 60%, #000 40%);
+  background: color-mix(in oklab, var(--primary) 15%, #fff 85%);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.signupForm {
+  gap: 1.2rem;
+}
+
+.selectedPlanPill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: calc(var(--radius) + 2px);
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  background: color-mix(in oklab, var(--muted) 10%, #fff 90%);
+  padding: 0.75rem 1rem;
+}
+
+.selectedPlanPill .planName {
+  font-size: 0.95rem;
+}
+
+.selectedPlanPill .planPrice {
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .planEdit {

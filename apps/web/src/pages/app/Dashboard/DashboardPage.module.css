@@ -1,6 +1,9 @@
 .page {
   display: grid;
   gap: 2rem;
+  margin: clamp(2px, 0.4vw, 6px) 0 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: color-mix(in oklab, #fff 96%, var(--muted) 4%);
 }
 
 .header {

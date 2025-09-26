@@ -10,12 +10,12 @@ export function AppLayout() {
       <ScrollToTop />
       <AppSidebar />
       <div className={s.body}>
-        <header className={s.topbar}>
-          <span className={s.topbarTitle}>TripPlannerHQ</span>
-          <span className={s.topbarSubtitle}>Welcome back</span>
-        </header>
         <main className={s.main}>
-          <Outlet />
+          <div className={s.surface}>
+            <div className={s.surfaceContent}>
+              <Outlet />
+            </div>
+          </div>
         </main>
       </div>
     </div>
