@@ -1,0 +1,106 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 6vw, 6rem) 0;
+  background: #fff;                 /* match inner sections */
+  color: var(--foreground);
+  border-top: 1px solid var(--border);
+}
+
+/* very soft background halos (no animation) */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .6;
+  background:
+    radial-gradient(60rem 30rem at 50% -10%,
+      color-mix(in oklab, var(--quaternary) 12%, transparent), transparent 60%),
+    radial-gradient(40rem 20rem at 10% 110%,
+      color-mix(in oklab, var(--primary) 10%, transparent), transparent 70%),
+    radial-gradient(36rem 18rem at 100% 90%,
+      color-mix(in oklab, var(--tertiary) 10%, transparent), transparent 70%);
+}
+
+/* soften the transition into the next section */
+.section::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
+  pointer-events: none;
+}
+
+.blob { display: none; } /* no floating blobs for this calm CTA */
+
+/* inner content */
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 56rem; /* ~896px */
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .9rem;
+  border-radius: 9999px;
+  font-size: .9rem;
+  font-weight: 700;
+  color: color-mix(in oklab, var(--foreground) 85%, #000 15%);
+  background: color-mix(in oklab, #fff 88%, var(--quaternary) 12%);
+  border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
+.title {
+  margin: 1rem 0 .75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+}
+
+.lede {
+  font-size: 1.125rem;
+  color: var(--muted-foreground);
+  max-width: 42rem;
+  margin: 0 auto 1.25rem;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: .75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: .75rem;
+}
+
+/* keep buttons consistent with your global Button variants, add only light spacing tweaks if needed */
+.btnPrimary,
+.btnSecondary {
+  padding: 1.1rem 1.6rem; /* optional: tiny bump without fighting your Button sizes */
+}
+
+.perks {
+  display: flex;
+  gap: 1rem 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  font-size: .95rem;
+  color: var(--muted-foreground);
+}
+.perks span {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* reduced motion: no bg movement anyway */
+@media (prefers-reduced-motion: reduce) {
+  .bg { opacity: .5; }
+}

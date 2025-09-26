@@ -1,0 +1,21 @@
+﻿.shell {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 64px;
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+}
+
+.main {
+  flex: 1;
+}

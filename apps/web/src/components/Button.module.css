@@ -1,0 +1,98 @@
+/* Base button */
+.btn {
+  --btn-radius: var(--radius, 10px);
+  --btn-padding-y: 0.75rem;
+  --btn-padding-x: 1.25rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  border-radius: var(--btn-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none; /* for <Link> */
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+
+  /* inherit text color by default; variants set their own */
+  color: inherit;
+  background: transparent;
+
+  transition: transform .2s ease, filter .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+/* Sizes */
+.sm { font-size: .875rem; padding: calc(var(--btn-padding-y) - .25rem) calc(var(--btn-padding-x) - .25rem); }
+.md { font-size: 1rem;    padding: var(--btn-padding-y) var(--btn-padding-x); }
+.lg { font-size: 1.125rem; padding: 1.25rem 1.75rem; }
+
+/* ===== Variants ===== */
+
+/* Primary: animated tropical gradient (calm) */
+.primary {
+  color: var(--primary-foreground);
+  border-color: color-mix(in oklab, var(--primary) 28%, transparent);
+  background: linear-gradient(
+    135deg,
+    var(--tertiary) 0%,
+    var(--primary) 55%,
+    var(--secondary) 100%
+  );
+  background-size: 180% 180%;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+  animation: btn-gradient-shift 16s ease-in-out infinite alternate, btn-glow 3s ease-in-out infinite;
+}
+.primary:hover  { transform: translateY(-2px); filter: brightness(1.03); }
+.primary:active { transform: translateY(0);     filter: brightness(.98); }
+
+/* Secondary: glassy / soft */
+.secondary {
+  color: #1a1a2e; /* readable on the glass background */
+  border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+  background: color-mix(in oklab, #ffffff 90%, var(--primary) 10%);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 36px -14px rgba(0,0,0,.18);
+}
+.secondary:hover  { background: color-mix(in oklab, #ffffff 84%, var(--primary) 16%); transform: translateY(-2px); }
+.secondary:active { transform: translateY(0); }
+
+/* Ghost: minimal, for tertiary actions */
+.ghost {
+  background: transparent;
+  color: var(--primary);
+  border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+}
+.ghost:hover  { background: color-mix(in oklab, var(--primary) 12%, transparent); }
+.ghost:active { background: color-mix(in oklab, var(--primary) 18%, transparent); }
+
+/* Disabled state (for <button disabled>) */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+/* Focus ring */
+.btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ring, var(--primary)) 60%, transparent);
+  outline-offset: 2px;
+}
+
+/* Keyframes (borrowed from your globals vibe, slightly calmer) */
+@keyframes btn-gradient-shift { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); }
+  50%      { box-shadow: 0 28px 56px -12px rgba(0,0,0,.28); }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .primary { animation: none; }
+  .btn { transition: none; }
+}
