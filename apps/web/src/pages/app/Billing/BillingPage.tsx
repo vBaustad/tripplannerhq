@@ -2,17 +2,25 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../../../components/Button";
 import { useAuth } from "../../../app/providers/AuthProvider";
+import { getPlanById } from "../../../app/subscriptions";
 import s from "./BillingPage.module.css";
 
 const API_BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 const PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID ?? "";
 
 export function BillingPage() {
-  const { user, logout, updateCustomerId } = useAuth();
+  const { user, logout, updateCustomerId, refreshSubscription } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "processing">("idle");
+
+  const plan = getPlanById(user?.subscriptionPriceId ?? null);
+  const renewalDate = useMemo(() => {
+    if (!user?.subscriptionCurrentPeriodEnd) return null;
+    const date = new Date(user.subscriptionCurrentPeriodEnd);
+    return Number.isNaN(date.getTime()) ? null : date.toLocaleDateString();
+  }, [user?.subscriptionCurrentPeriodEnd]);
 
   const successStatus = useMemo(() => {
     const statusParam = params.get("status");
@@ -68,7 +76,7 @@ export function BillingPage() {
 
       const data = (await response.json()) as { url?: string; customerId?: string };
       if (data.customerId && data.customerId !== user.stripeCustomerId) {
-        updateCustomerId(data.customerId);
+        await updateCustomerId(data.customerId);
       }
       if (!data.url) {
         throw new Error("Stripe did not return a checkout URL.");
@@ -116,10 +124,15 @@ export function BillingPage() {
     <div className={s.page}>
       <div className={s.container}>
         <header className={s.header}>
-          <h1 className={s.title}>Manage your TripPlannerHQ subscription</h1>
-          <p className={s.subtitle}>
-            Launch Stripe's secure checkout to start a subscription or open the customer portal to update payment details and plans.
-          </p>
+          <div>
+            <h1 className={s.title}>Manage your TripPlannerHQ subscription</h1>
+            <p className={s.subtitle}>
+              Launch Stripe's secure checkout to start a subscription or open the customer portal to update payment details and plans.
+            </p>
+          </div>
+          <Button variant="secondary" size="sm" onClick={refreshSubscription}>
+            Refresh status
+          </Button>
         </header>
 
         <section className={s.card}>
@@ -127,6 +140,22 @@ export function BillingPage() {
             <span><strong>Name:</strong> {user.name}</span>
             <span><strong>Email:</strong> {user.email}</span>
             <span><strong>Stripe customer:</strong> {user.stripeCustomerId ?? "Not yet created"}</span>
+          </div>
+
+          <div className={s.subscriptionSummary}>
+            <div>
+              <span className={s.summaryLabel}>Plan</span>
+              <div className={s.summaryValue}>{plan ? plan.name : "No plan detected"}</div>
+              {plan ? <p className={s.summaryMeta}>{plan.priceLabel}</p> : null}
+            </div>
+            <div>
+              <span className={s.summaryLabel}>Status</span>
+              <div className={s.summaryValue}>{user.subscriptionStatus ?? (plan ? "active" : "inactive")}</div>
+            </div>
+            <div>
+              <span className={s.summaryLabel}>Renews</span>
+              <div className={s.summaryValue}>{renewalDate ?? "After trial"}</div>
+            </div>
           </div>
 
           {successStatus ? <div className={s.success}>{successStatus}</div> : null}

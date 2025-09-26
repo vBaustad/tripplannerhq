@@ -1,0 +1,142 @@
+.page {
+  display: grid;
+  gap: 2rem;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+}
+
+.layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  border-radius: calc(var(--radius) + 8px);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  background: color-mix(in oklab, #fff 96%, var(--muted) 4%);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  display: grid;
+  gap: 0.9rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.input {
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  padding: 0.75rem 0.9rem;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.input:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.success,
+.error {
+  font-size: 0.85rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.success {
+  background: color-mix(in oklab, var(--primary) 12%, #fff 88%);
+  border: 1px solid color-mix(in oklab, var(--primary) 35%, transparent);
+  color: color-mix(in oklab, var(--primary) 70%, black 30%);
+}
+
+.error {
+  background: color-mix(in oklab, var(--destructive) 12%, #fff 88%);
+  border: 1px solid color-mix(in oklab, var(--destructive) 35%, transparent);
+  color: var(--destructive);
+}
+
+.planName {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.planPrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+.planDescription {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.planStatus {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.planStatus span {
+  font-weight: 600;
+  color: color-mix(in oklab, var(--primary) 75%, black 25%);
+}
+
+.empty {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+}

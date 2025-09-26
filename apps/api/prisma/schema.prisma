@@ -3,19 +3,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("STORAGE_PRISMA_URL")
+  directUrl = env("STORAGE_URL_NON_POOLING")
 }
 
 model User {
   id            String  @id @default(uuid()) @db.Uuid
   email         String  @unique
   displayName   String?
+  passwordHash  String
+  stripeCustomerId String? @unique
+  subscriptionPriceId String?
+  subscriptionStatus  String?
+  subscriptionCurrentPeriodEnd DateTime?
   homeCurrency  String  @default("USD")
   createdUtc    DateTime @default(now())
   updatedUtc    DateTime @updatedAt
 
   trips         Trip[]
+}
+
+model SignupSession {
+  id              String   @id @default(uuid()) @db.Uuid
+  email           String
+  displayName     String
+  passwordHash    String
+  stripeCustomerId String?
+  planPriceId     String
+  setupIntentId   String?
+  createdUtc      DateTime @default(now())
+  expiresUtc      DateTime
+
+  @@unique([email])
 }
 
 model Trip {
