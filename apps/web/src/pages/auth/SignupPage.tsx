@@ -137,10 +137,11 @@ export function SignupPage() {
   };
 
   const handlePaymentSuccess = () => {
-    navigate("/app/billing", { replace: true });
+    navigate("/app", { replace: true });
   };
 
   const isPaymentPhase = phase === "payment" && signupContext && stripePromise;
+  const planSummary = selectedPlan ?? defaultPlan ?? null;
 
   return (
     <div className={s.page}>
@@ -159,97 +160,88 @@ export function SignupPage() {
           </Elements>
         </div>
       ) : (
-        <div className={s.center}>
-          <div className={s.card}>
-            <header className={s.header}>
-              <h1 className={s.title}>Create your account</h1>
-              <p className={s.subtitle}>Start planning smarter trips with shared budgets, reminders, and collaborative tools.</p>
-            </header>
-
-            <form className={s.form} onSubmit={handleSubmitDetails}>
-              {error ? <div className={s.error}>{error}</div> : null}
-
-              <div className={s.field}>
-                <label className={s.label} htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  className={s.input}
-                  type="text"
-                  autoComplete="name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  placeholder="Taylor Traveler"
-                />
-              </div>
-
-              <div className={s.field}>
-                <label className={s.label} htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  className={s.input}
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                />
-              </div>
-
-              <div className={s.field}>
-                <label className={s.label} htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  className={s.input}
-                  type="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="********"
-                />
-                <span className={s.hint}>Use at least 8 characters. Your password is encrypted before it reaches our database.</span>
-              </div>
-
-              {planOptions.length > 0 ? (
-                <div className={s.planSection}>
-                  <div className={s.planSectionHeader}>
-                    <span className={s.label}>Choose your plan</span>
-                    <span className={s.planTrial}>14-day free trial included</span>
-                  </div>
-                  <div className={s.planGrid}>
-                    {planOptions.map((plan) => {
-                      const isActive = plan.id === selectedPlanId;
-                      return (
-                        <button
-                          key={plan.id}
-                          type="button"
-                          className={`${s.planOption} ${isActive ? s.planOptionActive : ""}`}
-                          onClick={() => setSelectedPlanId(plan.id)}
-                        >
-                          <div className={s.planOptionHeader}>
-                            <span className={s.planName}>{plan.name}</span>
-                            {plan.popular ? <span className={s.planBadge}>Most popular</span> : null}
-                          </div>
-                          <div className={s.planPrice}>{plan.priceLabel}</div>
-                          <p className={s.planDescription}>{plan.description}</p>
-                        </button>
-                      );
-                    })}
-                  </div>
+        <div className={s.checkoutOuter}>
+          <div className={s.checkoutShell}>
+            <SignupSidebar
+              mode="select"
+              planOptions={planOptions}
+              selectedPlanId={selectedPlanId}
+              onSelectPlan={(planId) => setSelectedPlanId(planId)}
+            />
+            <div className={s.checkoutRight}>
+              <div className={s.checkoutHeader}>
+                <div className={s.signupIntro}>
+                  <h2 className={s.checkoutTitle}>Create your account</h2>
+                  <p className={s.checkoutSubtitle}>
+                    Start planning smarter trips with shared budgets, reminders, and collaborative tools.
+                  </p>
                 </div>
-              ) : null}
-
-              <div className={s.actions}>
-                <Button variant="primary" size="lg" type="submit" disabled={isSubmittingDetails}>
-                  {isSubmittingDetails ? "Preparing checkout..." : "Continue to secure checkout"}
-                </Button>
+                <span className={s.checkoutStep}>Step 1 of 2</span>
               </div>
 
-              <p className={s.stripeNotice}>We partner with <span>Stripe</span> to process payments. You won’t be charged until your trial ends.</p>
-            </form>
+              <form className={`${s.form} ${s.signupForm}`} onSubmit={handleSubmitDetails}>
+                {error ? <div className={s.error}>{error}</div> : null}
 
-            <p className={s.altAction}>
-              Already have an account? <Link to="/login" className={s.link}>Log in</Link>
-            </p>
+                <div className={s.field}>
+                  <label className={s.label} htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    className={s.input}
+                    type="text"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="Taylor Traveler"
+                  />
+                </div>
+
+                <div className={s.field}>
+                  <label className={s.label} htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    className={s.input}
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div className={s.field}>
+                  <label className={s.label} htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    className={s.input}
+                    type="password"
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="********"
+                  />
+                  <span className={s.hint}>Use at least 8 characters. Your password is encrypted before it reaches our database.</span>
+                </div>
+
+                <div className={s.actions}>
+                  <Button variant="primary" size="lg" type="submit" disabled={isSubmittingDetails}>
+                    {isSubmittingDetails ? "Preparing checkout..." : "Continue to secure checkout"}
+                  </Button>
+                </div>
+
+                {planSummary ? (
+                  <div className={s.selectedPlanPill}>
+                    <span className={s.planName}>{planSummary.name}</span>
+                    <span className={s.planPrice}>{planSummary.priceLabel}</span>
+                  </div>
+                ) : null}
+
+                <p className={s.stripeNotice}>We partner with <span>Stripe</span> to process payments. You won’t be charged until your trial ends.</p>
+              </form>
+
+              <p className={s.checkoutAlt}>
+                Already have an account? <Link to="/login" className={s.link}>Log in</Link>
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -309,34 +301,7 @@ function SignupPaymentStep({ signupId, plan, onEditDetails, onSuccess }: SignupP
 
   return (
     <div className={s.checkoutShell}>
-      <aside className={s.checkoutLeft}>
-        <div className={s.checkoutBrand}>
-          <div className={s.checkoutLogo}>TP</div>
-          <div>
-            <div className={s.checkoutBrandName}>TripPlannerHQ</div>
-            <div className={s.checkoutTagline}>Plan smarter trips with confidence.</div>
-          </div>
-        </div>
-
-        <div className={s.checkoutPlanCard}>
-          <span className={s.label}>Your plan</span>
-          {plan ? (
-            <>
-              <div className={s.checkoutPlanName}>
-                {plan.name}
-                {plan.popular ? <span className={s.planBadgeInline}>Most popular</span> : null}
-              </div>
-              <div className={s.checkoutPlanPrice}>{plan.priceLabel}</div>
-              <p className={s.checkoutPlanDescription}>{plan.description}</p>
-            </>
-          ) : (
-            <p className={s.checkoutPlanDescription}>Choose the plan that fits best.</p>
-          )}
-        </div>
-
-        <p className={s.checkoutBlurb}>Enjoy a 14-day free trial. You can cancel anytime before it renews.</p>
-        <span className={s.checkoutPowered}>Powered by Stripe</span>
-      </aside>
+      <SignupSidebar mode="summary" plan={plan} />
 
       <form className={s.checkoutRight} onSubmit={handleSubmit}>
         <div className={s.checkoutHeader}>
@@ -361,5 +326,94 @@ function SignupPaymentStep({ signupId, plan, onEditDetails, onSuccess }: SignupP
         <p className={s.checkoutStripe}>Securely processed by <span>Stripe</span></p>
       </form>
     </div>
+  );
+}
+
+type SignupSidebarProps =
+  | {
+      mode: "select";
+      planOptions: PlanOption[];
+      selectedPlanId: string;
+      onSelectPlan: (planId: string) => void;
+    }
+  | {
+      mode: "summary";
+      plan: PlanOption | null;
+    };
+
+function SignupSidebar(props: SignupSidebarProps) {
+  const renderPlanContent = () => {
+    if (props.mode === "select") {
+      const { planOptions, selectedPlanId, onSelectPlan } = props;
+      return (
+        <div className={s.checkoutPlanCard}>
+          <div className={s.sidebarSection}>
+            <span className={s.label}>Choose your plan</span>
+            <span className={s.planTrial}>14-day free trial included</span>
+          </div>
+          {planOptions.length === 0 ? (
+            <p className={s.sidebarPlaceholder}>Plans are not yet available. Signups are temporarily paused.</p>
+          ) : (
+            <div className={s.planGrid}>
+              {planOptions.map((plan) => {
+                const isActive = plan.id === selectedPlanId;
+                return (
+                  <button
+                    key={plan.id}
+                    type="button"
+                    className={`${s.planOption} ${isActive ? s.planOptionActive : ""}`}
+                    onClick={() => onSelectPlan(plan.id)}
+                    aria-pressed={isActive}
+                  >
+                    <div className={s.planOptionHeader}>
+                      <span className={s.planName}>{plan.name}</span>
+                      {plan.popular ? <span className={s.planBadge}>Most popular</span> : null}
+                    </div>
+                    <div className={s.planPrice}>{plan.priceLabel}</div>
+                    <p className={s.planDescription}>{plan.description}</p>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const { plan } = props;
+    return (
+      <div className={s.checkoutPlanCard}>
+        <span className={s.label}>Your plan</span>
+        {plan ? (
+          <>
+            <div className={s.checkoutPlanName}>
+              {plan.name}
+              {plan.popular ? <span className={s.planBadgeInline}>Most popular</span> : null}
+            </div>
+            <div className={s.checkoutPlanPrice}>{plan.priceLabel}</div>
+            <p className={s.checkoutPlanDescription}>{plan.description}</p>
+          </>
+        ) : (
+          <p className={s.checkoutPlanDescription}>Choose the plan that fits best.</p>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <aside className={s.checkoutLeft}>
+      <div className={s.checkoutBrand}>
+        <div className={s.checkoutLogo}>TP</div>
+        <div>
+          <div className={s.checkoutBrandName}>TripPlannerHQ</div>
+          <div className={s.checkoutTagline}>Plan smarter trips with confidence.</div>
+        </div>
+      </div>
+
+      {renderPlanContent()}
+
+      <p className={s.checkoutBlurb}>Enjoy a 14-day free trial. You can cancel anytime before it renews.</p>
+      <span className={s.checkoutPowered}>Powered by Stripe</span>
+    </aside>
   );
 }

@@ -1,12 +1,12 @@
-﻿import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../../../components/Button";
 import { useAuth } from "../../../app/providers/AuthProvider";
-import { getPlanById } from "../../../app/subscriptions";
+import { getPlanById, subscriptionPlans } from "../../../app/subscriptions";
 import s from "./BillingPage.module.css";
 
 const API_BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
-const PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID ?? "";
+const FALLBACK_PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID ?? "";
 
 export function BillingPage() {
   const { user, logout, updateCustomerId, refreshSubscription } = useAuth();
@@ -15,26 +15,11 @@ export function BillingPage() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "processing">("idle");
 
-  const plan = getPlanById(user?.subscriptionPriceId ?? null);
-  const renewalDate = useMemo(() => {
-    if (!user?.subscriptionCurrentPeriodEnd) return null;
-    const date = new Date(user.subscriptionCurrentPeriodEnd);
-    return Number.isNaN(date.getTime()) ? null : date.toLocaleDateString();
-  }, [user?.subscriptionCurrentPeriodEnd]);
-
-  const successStatus = useMemo(() => {
-    const statusParam = params.get("status");
-    if (!statusParam) return null;
-    if (statusParam === "success") return "Your subscription was updated. You can manage it below.";
-    if (statusParam === "cancel") return "Checkout canceled. Try again when you are ready.";
-    return null;
-  }, [params]);
-
   if (!user) {
     return (
       <div className={s.page}>
         <div className={s.container}>
-          <div className={s.card}>
+          <div className={s.singleCard}>
             <h2 className={s.sectionTitle}>You need an account to continue</h2>
             <p className={s.note}>Log in again to manage your subscription.</p>
             <Button variant="primary" to="/login">Go to login</Button>
@@ -44,14 +29,45 @@ export function BillingPage() {
     );
   }
 
+  const plan = getPlanById(user.subscriptionPriceId ?? null);
+  const plans = subscriptionPlans;
+
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(() => plan?.id ?? plans[0]?.id ?? FALLBACK_PRICE_ID);
+
+  useEffect(() => {
+    if (plan?.id) {
+      setSelectedPlanId(plan.id);
+    }
+  }, [plan?.id]);
+
+  const selectedPlan = useMemo(
+    () => plans.find((item) => item.id === selectedPlanId) ?? null,
+    [plans, selectedPlanId]
+  );
+
+  const renewalDate = useMemo(() => {
+    if (!user.subscriptionCurrentPeriodEnd) return null;
+    const date = new Date(user.subscriptionCurrentPeriodEnd);
+    return Number.isNaN(date.getTime()) ? null : date.toLocaleDateString();
+  }, [user.subscriptionCurrentPeriodEnd]);
+
+  const successStatus = useMemo(() => {
+    const statusParam = params.get("status");
+    if (!statusParam) return null;
+    if (statusParam === "success") return "Your subscription was updated. You can manage it below.";
+    if (statusParam === "cancel") return "Checkout canceled. Try again when you are ready.";
+    return null;
+  }, [params]);
+
   const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
   };
 
   const handleCheckout = async () => {
-    if (!PRICE_ID) {
-      setError("Missing Stripe price ID. Set VITE_STRIPE_PRICE_ID in your environment.");
+    const checkoutPriceId = selectedPlan?.id ?? FALLBACK_PRICE_ID;
+    if (!checkoutPriceId) {
+      setError("Missing Stripe price ID. Configure your plan identifiers to continue.");
       return;
     }
 
@@ -63,7 +79,7 @@ export function BillingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          priceId: PRICE_ID,
+          priceId: checkoutPriceId,
           customerId: user.stripeCustomerId,
           customerEmail: user.email,
         }),
@@ -127,7 +143,7 @@ export function BillingPage() {
           <div>
             <h1 className={s.title}>Manage your TripPlannerHQ subscription</h1>
             <p className={s.subtitle}>
-              Launch Stripe's secure checkout to start a subscription or open the customer portal to update payment details and plans.
+              Choose your plan and complete secure checkout with Stripe. Already subscribed? Manage billing directly in the portal.
             </p>
           </div>
           <Button variant="secondary" size="sm" onClick={refreshSubscription}>
@@ -135,54 +151,94 @@ export function BillingPage() {
           </Button>
         </header>
 
-        <section className={s.card}>
-          <div className={s.meta}>
-            <span><strong>Name:</strong> {user.name}</span>
-            <span><strong>Email:</strong> {user.email}</span>
-            <span><strong>Stripe customer:</strong> {user.stripeCustomerId ?? "Not yet created"}</span>
-          </div>
-
-          <div className={s.subscriptionSummary}>
-            <div>
-              <span className={s.summaryLabel}>Plan</span>
-              <div className={s.summaryValue}>{plan ? plan.name : "No plan detected"}</div>
-              {plan ? <p className={s.summaryMeta}>{plan.priceLabel}</p> : null}
+        <div className={s.layout}>
+          <section className={s.planColumn}>
+            <div className={s.planIntro}>
+              <h2 className={s.sectionTitle}>Plans</h2>
+              <p className={s.planHint}>Select a tier to preview pricing and benefits. You can switch later.</p>
             </div>
-            <div>
-              <span className={s.summaryLabel}>Status</span>
-              <div className={s.summaryValue}>{user.subscriptionStatus ?? (plan ? "active" : "inactive")}</div>
+
+            <div className={s.planList}>
+              {plans.length === 0 ? (
+                <div className={s.placeholder}>No Stripe price IDs configured. Add plan IDs to your environment variables.</div>
+              ) : (
+                plans.map((planOption) => {
+                  const isSelected = planOption.id === selectedPlanId;
+                  const isCurrent = plan?.id === planOption.id;
+                  return (
+                    <button
+                      key={planOption.id}
+                      type="button"
+                      className={`${s.planCard} ${isSelected ? s.planCardActive : ""}`}
+                      onClick={() => setSelectedPlanId(planOption.id)}
+                      aria-pressed={isSelected}
+                    >
+                      <div className={s.planCardHeader}>
+                        <h3 className={s.planName}>{planOption.name}</h3>
+                        {isCurrent ? <span className={s.badge}>Current</span> : null}
+                      </div>
+                      <div className={s.planPrice}>{planOption.priceLabel}</div>
+                      <p className={s.planDescription}>{planOption.description}</p>
+                    </button>
+                  );
+                })
+              )}
             </div>
-            <div>
-              <span className={s.summaryLabel}>Renews</span>
-              <div className={s.summaryValue}>{renewalDate ?? "After trial"}</div>
+          </section>
+
+          <section className={s.paymentColumn}>
+            <div className={s.meta}>
+              <span><strong>Name:</strong> {user.name}</span>
+              <span><strong>Email:</strong> {user.email}</span>
+              <span><strong>Stripe customer:</strong> {user.stripeCustomerId ?? "Not yet created"}</span>
             </div>
-          </div>
 
-          {successStatus ? <div className={s.success}>{successStatus}</div> : null}
-          {error ? <div className={s.alert}>{error}</div> : null}
+            <div className={s.subscriptionSummary}>
+              <div>
+                <span className={s.summaryLabel}>Selected tier</span>
+                <div className={s.summaryValue}>{selectedPlan?.name ?? "Select a plan"}</div>
+                {selectedPlan ? <p className={s.summaryMeta}>{selectedPlan.priceLabel}</p> : null}
+              </div>
+              <div>
+                <span className={s.summaryLabel}>Current status</span>
+                <div className={s.summaryValue}>{user.subscriptionStatus ?? (plan ? "active" : "inactive")}</div>
+              </div>
+              <div>
+                <span className={s.summaryLabel}>Renews</span>
+                <div className={s.summaryValue}>{renewalDate ?? "After trial"}</div>
+              </div>
+            </div>
 
-          <div className={s.actions}>
-            <Button variant="primary" size="lg" onClick={handleCheckout} disabled={status === "processing"}>
-              {status === "processing" ? "Working..." : "Start subscription"}
-            </Button>
-            <Button variant="secondary" size="lg" onClick={handlePortal} disabled={status === "processing"}>
-              Manage billing in Stripe
-            </Button>
-            <Button variant="ghost" size="lg" onClick={handleLogout}>
-              Log out
-            </Button>
-          </div>
+            {successStatus ? <div className={s.success}>{successStatus}</div> : null}
+            {error ? <div className={s.alert}>{error}</div> : null}
 
-          <ul className={s.statusList}>
-            <li>Checkout uses Stripe's prebuilt subscription page with your configured price ID.</li>
-            <li>Billing portal lets you change plans, payment methods, or cancel anytime.</li>
-            <li>Need to update pricing? Adjust <code>STRIPE_PRICE_ID</code> and <code>VITE_STRIPE_PRICE_ID</code>.</li>
-          </ul>
+            <div className={s.actions}>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={handleCheckout}
+                disabled={status === "processing" || !selectedPlanId}
+              >
+                {status === "processing" ? "Starting checkout..." : "Continue to Stripe"}
+              </Button>
+              <Button variant="secondary" size="lg" onClick={handlePortal} disabled={status === "processing"}>
+                Manage in Stripe portal
+              </Button>
+              <Button variant="ghost" size="lg" onClick={handleLogout}>
+                Log out
+              </Button>
+            </div>
 
-          <p className={s.note}>
-            Make sure your development server is running with access to <code>STRIPE_SECRET_KEY</code> and the same origin allowed in <code>CORS_ORIGINS</code>.
-          </p>
-        </section>
+            <ul className={s.statusList}>
+              <li>Stripe securely handles all payment information.</li>
+              <li>You can switch plans or cancel anytime from the customer portal.</li>
+            </ul>
+
+            <p className={s.note}>
+              Need to update pricing IDs? Adjust <code>PRICE_EXPLORER_ID</code>, <code>PRICE_ADVENTURER_ID</code>, and <code>PRICE_GLOBETROTTER_ID</code> (plus their Vite counterparts).
+            </p>
+          </section>
+        </div>
       </div>
     </div>
   );

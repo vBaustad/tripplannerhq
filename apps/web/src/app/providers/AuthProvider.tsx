@@ -180,33 +180,28 @@ export function AuthProvider({ children }: Props) {
         throw new Error(extractErrorMessage(payload, "Unable to create account."));
       }
 
-      if (!payload || typeof payload !== "object" || payload === null) {
+      if (!payload || typeof payload !== "object") {
         throw new Error("Malformed response from server.");
       }
 
-      const signupId = typeof (payload as Record<string, unknown>).signupId === "string"
-        ? (payload as Record<string, unknown>).signupId
-        : null;
-      const clientSecret = typeof (payload as Record<string, unknown>).clientSecret === "string"
-        ? (payload as Record<string, unknown>).clientSecret
-        : null;
-      const returnedPublishableKey = typeof (payload as Record<string, unknown>).publishableKey === "string"
-        ? (payload as Record<string, unknown>).publishableKey
-        : null;
-      const returnedPlanPriceId = typeof (payload as Record<string, unknown>).planPriceId === "string"
-        ? (payload as Record<string, unknown>).planPriceId
-        : planPriceId;
+      const record = payload as Record<string, unknown>;
+      const signupId = typeof record.signupId === "string" ? record.signupId : null;
+      const clientSecret = typeof record.clientSecret === "string" ? record.clientSecret : null;
+      const returnedPublishableKey = typeof record.publishableKey === "string" ? record.publishableKey : null;
+      const returnedPlanPriceId = typeof record.planPriceId === "string" ? record.planPriceId : planPriceId;
 
       if (!signupId || !clientSecret) {
         throw new Error("Stripe signup session is incomplete.");
       }
 
-      return {
+      const result: SignupStartResult = {
         signupId,
         clientSecret,
         publishableKey: returnedPublishableKey,
         planPriceId: returnedPlanPriceId,
-      } satisfies SignupStartResult;
+      };
+
+      return result;
     } finally {
       setStatus("idle");
     }
@@ -296,12 +291,12 @@ export function AuthProvider({ children }: Props) {
         throw new Error(extractErrorMessage(payload, "Unable to finalize signup."));
       }
 
-    const nextUser = parseUserPayload(payload);
-    persistUser(nextUser);
-    setUser(nextUser);
-    hasSyncedSubscription.current = false;
-    return nextUser;
-  } finally {
+      const nextUser = parseUserPayload(payload);
+      persistUser(nextUser);
+      setUser(nextUser);
+      hasSyncedSubscription.current = false;
+      return nextUser;
+    } finally {
       setStatus("idle");
     }
   }, [setStatus, setUser]);

@@ -10,7 +10,7 @@ export type SubscriptionPlan = {
   description: string;
 };
 
-export const subscriptionPlans: SubscriptionPlan[] = [
+const allPlans: SubscriptionPlan[] = [
   {
     id: explorerId,
     key: "explorer",
@@ -32,7 +32,9 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     priceLabel: "$39.99 / month",
     description: "Built for travel planners and group leaders.",
   },
-].filter((plan) => typeof plan.id === "string" && plan.id.length > 0);
+];
+
+export const subscriptionPlans: SubscriptionPlan[] = allPlans.filter((plan) => plan.id.trim().length > 0);
 
 export function getPlanById(id: string | null | undefined) {
   if (!id) return null;

@@ -29,7 +29,7 @@ export function LoginPage() {
     try {
       await login({ email: email.trim(), password });
       const state = (location.state as LocationState) ?? null;
-      navigate(state?.from ?? "/app/billing", { replace: true });
+      navigate(state?.from ?? "/app", { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to log in. Try again.");
     }

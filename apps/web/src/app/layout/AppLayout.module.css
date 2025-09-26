@@ -1,43 +1,46 @@
 ﻿.shell {
   min-height: 100vh;
   display: flex;
-  background: color-mix(in oklab, var(--muted) 12%, #fff 88%);
+  background: #fff;
 }
 
 .body {
   flex: 1;
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-  background: var(--background);
-}
-
-.topbar {
-  height: 64px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.75rem;
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.topbarTitle {
-  font-weight: 700;
-}
-
-.topbarSubtitle {
-  font-size: 0.9rem;
-  color: var(--muted-foreground);
+  padding: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, hsl(18deg 90% 65%) 18%, #fff 82%),
+    color-mix(in oklab, hsl(25deg 85% 72%) 9%, #fff 91%)
+  );
 }
 
 .main {
   flex: 1;
-  padding: clamp(1.75rem, 4vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 0;
+  padding: clamp(1.35rem, 4vw, 2.3rem) clamp(1rem, 3vw, 2rem) clamp(1.6rem, 4.5vw, 2.6rem);
+  background: #fff;
+  border: 1px solid color-mix(in oklab, var(--muted-foreground) 55%, var(--border) 45%);
+  border-radius: 20px 0 0 0;
+  box-shadow: 0 24px 55px -46px rgba(24, 30, 70, 0.35);
+}
+
+.surface {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.surfaceContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3.5vw, 2.5rem);
+  width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -45,11 +48,10 @@
     flex-direction: column;
   }
 
-  .body {
-    min-height: calc(100vh - 80px);
-  }
-
-  .topbar {
-    padding: 0 1.25rem;
+  .main {
+    margin: clamp(1rem, 4vw, 2rem) 0 0;
+    padding: clamp(1rem, 6vw, 2rem) clamp(0.75rem, 6vw, 1.5rem) clamp(1.25rem, 6vw, 2.1rem);
+    border-radius: clamp(1rem, 6vw, 1.6rem) 0 0 0;
+    box-shadow: 0 18px 45px -38px rgba(24, 30, 70, 0.28);
   }
 }
