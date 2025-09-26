@@ -79,6 +79,26 @@
   gap: 0.5rem;
 }
 
+.paymentActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.stripeNotice {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.stripeNotice span {
+  font-weight: 700;
+  color: color-mix(in oklab, var(--primary) 80%, black 20%);
+}
+
 .altAction {
   text-align: center;
   font-size: 0.95rem;
@@ -100,9 +120,277 @@
   border-radius: calc(var(--radius) - 2px);
 }
 
+.notice {
+  font-size: 0.9rem;
+  color: var(--primary);
+  background: color-mix(in oklab, var(--primary) 10%, #fff 90%);
+  border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent);
+  padding: 0.65rem 0.75rem;
+  border-radius: calc(var(--radius) - 2px);
+}
+
 .hint {
   font-size: 0.85rem;
   color: var(--muted-foreground);
+}
+
+.planSection {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.planSectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.planTrial {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.planGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .planGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+.planOption {
+  text-align: left;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  background: color-mix(in oklab, #fff 92%, var(--muted) 8%);
+  padding: 0.9rem 1rem;
+  display: grid;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.planOption:focus-visible {
+  outline: none;
+  border-color: color-mix(in oklab, var(--primary) 38%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+.planOptionActive {
+  border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.planOptionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.planName {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.planBadge,
+.planBadgeInline {
+  background: color-mix(in oklab, var(--primary) 15%, #fff 85%);
+  color: color-mix(in oklab, var(--primary) 70%, black 30%);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.planBadgeInline {
+  margin-left: 0.5rem;
+}
+
+.planPrice {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.planDescription {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+.checkoutOuter {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 6vw, 4rem) 1.25rem;
+}
+
+.checkoutShell {
+  width: min(960px, 100%);
+  background: #fff;
+  border-radius: clamp(1.5rem, 3vw, 2rem);
+  box-shadow: 0 35px 80px -45px rgba(22, 15, 70, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 900px) {
+  .checkoutShell {
+    flex-direction: row;
+  }
+}
+
+.checkoutLeft {
+  flex: 1;
+  background: color-mix(in oklab, var(--muted) 22%, #fff 78%);
+  padding: clamp(2rem, 6vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.checkoutBrand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.checkoutLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--primary) 15%, #fff 85%);
+  color: color-mix(in oklab, var(--primary) 70%, black 30%);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.checkoutBrandName {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.checkoutTagline {
+  margin: 0;
+  font-size: 0.9rem;
+  color: color-mix(in oklab, var(--muted-foreground) 85%, #000 15%);
+}
+
+.checkoutPlanCard {
+  border-radius: calc(var(--radius) + 10px);
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  background: #fff;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  display: grid;
+  gap: 0.65rem;
+}
+
+.checkoutPlanName {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.checkoutPlanPrice {
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.checkoutPlanDescription {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.checkoutBlurb {
+  margin: 0;
+  font-size: 0.9rem;
+  color: color-mix(in oklab, var(--muted-foreground) 90%, #000 10%);
+}
+
+.checkoutPowered {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: color-mix(in oklab, var(--muted-foreground) 80%, #000 20%);
+}
+
+.checkoutRight {
+  flex: 1;
+  padding: clamp(2rem, 6vw, 3.5rem);
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.checkoutHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.checkoutTitle {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 800;
+}
+
+.planEdit {
+  border: none;
+  background: none;
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.planEdit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paymentElementWrapper {
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  background: #fff;
+}
+
+.checkoutFootnote {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.checkoutAlt {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.checkoutAlt .link {
+  font-weight: 600;
+}
+
+.checkoutStripe {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.checkoutStripe span {
+  font-weight: 700;
 }
 
 @media (max-width: 640px) {

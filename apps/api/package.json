@@ -6,10 +6,12 @@
     "dev": "node server/index.js",
     "start": "node server/index.js",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy"
+    "prisma:migrate": "prisma migrate deploy",
+    "seed:admin": "node scripts/seed-admin.js"
   },
   "dependencies": {
     "@prisma/client": "6.16.2",
+    "bcryptjs": "2.4.3",
     "cors": "2.8.5",
     "dotenv": "16.6.1",
     "express": "4.21.2",

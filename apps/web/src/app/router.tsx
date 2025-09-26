@@ -4,7 +4,9 @@ import { AppLayout } from "./layout/AppLayout";
 import { LandingPage } from "../pages/marketing/Landing/LandingPage";
 import { SignupPage } from "../pages/auth/SignupPage";
 import { LoginPage } from "../pages/auth/LoginPage";
+import { DashboardPage } from "../pages/app/Dashboard/DashboardPage";
 import { BillingPage } from "../pages/app/Billing/BillingPage";
+import { AccountPage } from "../pages/app/Account/AccountPage";
 import { RequireAuth } from "./routes/RequireAuth";
 
 export const router = createBrowserRouter([
@@ -24,8 +26,9 @@ export const router = createBrowserRouter([
         path: "/app",
         element: <AppLayout />,
         children: [
-          { index: true, element: <BillingPage /> },
+          { index: true, element: <DashboardPage /> },
           { path: "billing", element: <BillingPage /> },
+          { path: "account", element: <AccountPage /> },
         ],
       },
     ],

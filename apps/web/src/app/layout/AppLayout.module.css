@@ -1,21 +1,55 @@
 ﻿.shell {
   min-height: 100vh;
-  background: var(--background);
+  display: flex;
+  background: color-mix(in oklab, var(--muted) 12%, #fff 88%);
 }
 
-.content {
+.body {
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--background);
 }
 
 .topbar {
   height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
   border-bottom: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbarTitle {
+  font-weight: 700;
+}
+
+.topbarSubtitle {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
 }
 
 .main {
   flex: 1;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+@media (max-width: 900px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .body {
+    min-height: calc(100vh - 80px);
+  }
+
+  .topbar {
+    padding: 0 1.25rem;
+  }
 }
