@@ -231,6 +231,7 @@ export function AuthProvider({ children }: Props) {
       }
 
       const nextUser = parseUserPayload(payload);
+
       persistUser(nextUser);
       setUser(nextUser);
       return nextUser;
